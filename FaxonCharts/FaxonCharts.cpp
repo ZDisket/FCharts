@@ -103,7 +103,7 @@ int main()
 
 
 	ZCharter Chart;
-	Chart.Init(800, 340);
+	Chart.Init(900, 350);
 	Chart.SetLegend(Lege);
 
 

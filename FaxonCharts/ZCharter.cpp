@@ -24,46 +24,6 @@ void ZCharter::InitGenericTheme()
 	CuTheme.datalabels = true;
 }
 
-int Faxon::ZCharter::CalculateRemFromIndexVec(const int & val, std::vector<Index>& Idxs)
-{
-	int diff = 99999999;
-	int yselect = Idxs[0].y;
-	int valsel = Idxs[0].val;
-	// Find the one with the least difference
-	auto Iv = Idxs.begin();
-	while (Iv != Idxs.end())
-	{
-		Index& Id = *Iv;
-		int adiff;
-
-		if (val < Id.val)
-			adiff = Id.val - val;
-		else
-			adiff = val - Id.val;
-		
-		
-		
-		
-		if (adiff < diff)
-		{
-			diff = adiff;
-			yselect = Id.y;
-			valsel = Id.val;
-
-
-		}
-	
-		++Iv;
-	}
-
-	// get K from index
-	//const double K = yselect / (double)valsel;
-   const double K = yselect / (double)valsel;
-
-	int ret = K * (double)val;
-
-	return ret;
-}
 
 void Faxon::ZCharter::DrawLegend(const int & lbx, const int & lby)
 {
@@ -449,7 +409,7 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 	// Low border y = 20%
 	int lowbory = h - percof(h, 20);
 
-	// Lateral (left) border x = 15%
+	// Lateral (left) border x = 9%
 	int latborx = percof(w, 9);
 
 
@@ -515,7 +475,7 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 		// Short guide line
 		Image.draw_line(curx, lowbory + 5 + CuTheme.borderthick, curx, lowbory - CuTheme.borderthick - 5, (BYTE*)CuTheme.guidelinecolor, 1.f);
 
-		DrawTxt(curx - 2, laby, XLabels[i], CuTheme.textcolor, CuTheme.fsize);
+		DrawTxt(curx - CuTheme.fsize, laby + (CuTheme.fsize / 4), XLabels[i], CuTheme.textcolor, CuTheme.fsize);
 
 
 		curx += xinc;
