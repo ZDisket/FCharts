@@ -203,7 +203,6 @@ namespace Faxon {
 
 		void InitGenericTheme();
 		
-		int CalculateRemFromIndexVec(const int& val, std::vector<Index>& Idxs);
 		void DrawTxt(const int& x0, const int& y0, const std::string& str, BYTE col[3], const int& fsize, const float& opacity = 1.f);
 		void DrawLegend(const int& lbx, const int& lby);
 
