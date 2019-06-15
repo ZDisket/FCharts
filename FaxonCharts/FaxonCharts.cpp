@@ -1,21 +1,121 @@
 // FaxonCharts.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include "pch.h"
 #include <iostream>
+#include "ZCharter.h"
+#include <random>
 
+
+int Random32(const INT32& in_iMin, const INT32& in_iMax)
+{
+	std::random_device rand_d;
+	std::mt19937 gen(rand_d());
+	std::uniform_int_distribution<int> distrib(in_iMin, in_iMax);
+
+
+	return distrib(gen);
+
+}
+
+
+const static std::string cnames[10] = { "NZL","USA","GBR","AUS","BRA","PRC","RUS", "CAN","DRC","PRK" };
+using namespace Faxon;
 int main()
 {
     std::cout << "Hello World!\n"; 
+	
+	srand(time(NULL));
+
+	
+	/*
+	Bar Chart creator tester
+	srand(time(NULL));
+	vector<BarItem> bars;
+
+	const int dos = 9;
+	for (int i = 0; i < dos;++i)
+	{
+	
+		Bar Ba1(rand() % 50 + 5, 0, 0, 255);
+		Bar Ba2(rand() % 50 + 5, 255,255, 0);
+		Bar Ba3(rand() % 50 + 5, 255, 0, 0);
+
+		vector<Bar> DaVec;
+		DaVec.push_back(Ba1); DaVec.push_back(Ba2); DaVec.push_back(Ba3);
+		
+		
+		BarItem BI(cnames[i], DaVec);
+	
+		bars.push_back(BI);
+	
+		
+	}
+	*/
+
+	vector<std::string> lbls = { "2001","2002","2003","2004","2005","2006","2007","2008" };
+	vector<LineItem> lis;
+	for (int f = 0;f < 3;f++)
+	{
+		vector<int> vs;
+		for (int i = 0; i < lbls.size(); i++)
+		{
+			vs.push_back(Random32(1000,70000));
+
+		}
+		LineItem Lix(cnames[f], vs, EPointShape::FullCircle,Random32(50,255), Random32(50, 255), Random32(50, 255));
+
+		lis.push_back(Lix);
+		srand(time(NULL));
+
+
+	}
+	/*
+	LegendEntry Leg1;
+	ascol(Leg1.color, 255, 0, 0);
+	Leg1.name = "Ground";
+
+	LegendEntry Leg2;
+	ascol(Leg2.color, 255, 255, 0);
+	Leg2.name = "Air";
+
+	LegendEntry Leg3;
+	ascol(Leg3.color, 0, 0, 255);
+	Leg3.name = "Naval";
+	*/
+
+
+	LegendEntry Leg1;
+	ascol(Leg1.color, lis[0].color[0], lis[0].color[1], lis[0].color[2]);
+	Leg1.name = "United Kingdom";
+
+	LegendEntry Leg2;
+	Leg2.name = "United States";
+	ascol(Leg2.color, lis[1].color[0], lis[1].color[1], lis[1].color[2]);
+
+	LegendEntry Leg3;
+	Leg3.name = "Canada";
+	ascol(Leg3.color, lis[2].color[0], lis[2].color[1], lis[2].color[2]);
+
+	vector<LegendEntry> Lege;
+	Lege.push_back(Leg1);
+	Lege.push_back(Leg2);
+	Lege.push_back(Leg3);
+
+
+	ZCharter Chart;
+	Chart.Init(800, 340);
+	Chart.SetLegend(Lege);
+
+
+
+	Chart.BuildLineChart(lis,lbls,6);
+	//Chart.BuildBarChart(bars);
+
+
+
+	Chart.GetImage().display();
+	
+
+	return 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

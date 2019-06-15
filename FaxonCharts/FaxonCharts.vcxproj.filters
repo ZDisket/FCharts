@@ -15,15 +15,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="CImg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ZCharter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="FaxonCharts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FaxonCharts.cpp">
+    <ClCompile Include="ZCharter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
