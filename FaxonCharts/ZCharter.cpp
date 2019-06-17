@@ -95,6 +95,17 @@ void Faxon::ZCharter::DrawChartArea(const int & latbx, const int & lowby)
 
 }
 
+void Faxon::ZCharter::DrawChartArea(const int & latbx, const int & lowby, const int & xdest)
+{
+	// fill it with background color
+	Image.fill(CuTheme.bgcolor[0], CuTheme.bgcolor[1], CuTheme.bgcolor[2]);
+	// Low border: Thick line from (latborx,lowbory) to (xdest,lowbory)
+	DrawThickLine(Image, latbx, lowby, xdest, lowby, (const BYTE*)&CuTheme.bordercolor, CuTheme.borderthick);
+
+	// Lateral border: Thick line from (latborx,lowbory) to (latborx,top)
+	DrawThickLine(Image, latbx, lowby, latbx, 0, (const BYTE*)&CuTheme.bordercolor, CuTheme.borderthick);
+}
+
 void Faxon::ZCharter::DrawYStretchLine(int x1, int y1, int x2, int y2, BYTE col[3], int thick, float opacity)
 {
 	for (int t = 0; t < thick;t++)
@@ -413,7 +424,6 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 	int latborx = percof(w, 9);
 
 
-	DrawChartArea(latborx, lowbory);
 
 	// Build the lateral indicator labels
 	// since there must be some space, we do font sz * 2
@@ -435,11 +445,28 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 	const int labinc = max / ydepth;
 	int clabi = labinc;
 	int fis = fincr;
+
 	//clabi = fis / K;
 
+	// We get the X constant calcs here since we need it for the length of the lateral guide lines
+	const int cawidth = w - latborx;
+
+	const int xinc = cawidth / maxsz;
+
+
+	const int xbase = latborx + CuTheme.borderthick;
+	const double XK = (double)xinc;
+
+
+
+	const int xbor = xbase + (XK * (maxsz - 1));
 
 
 	const double K = (double)fincr / (double)labinc;
+
+	DrawChartArea(latborx, lowbory,xbor);
+
+
 	clabi = 0;
 	for (int i = 0; i < ydepth; i++)
 	{
@@ -449,7 +476,7 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 		Image.draw_text(latborx - (CuTheme.fsize * (txt.length() * 0.8)), whr - (CuTheme.fsize * 0.5), txt.c_str(), (BYTE*)&CuTheme.textcolor, CuTheme.fsize, 1.f);
 
 		// Lateral guide lines
-		Image.draw_line(x1lg, whr, w, whr, (BYTE*)CuTheme.guidelinecolor, 1.f);
+		Image.draw_line(x1lg, whr, xbor, whr, (BYTE*)CuTheme.guidelinecolor, 1.f);
 
 		clabi = fis / K;
 
@@ -462,13 +489,13 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 	// Draw the X labels 
 	int xdepth = maxsz;
 
-	const int cawidth = w - latborx;
-
-	const int xinc = cawidth / xdepth;
 
 	int curx = latborx;
 
 	int laby = lowbory + CuTheme.borderthick + 3;
+	// X constant
+
+
 	for (int i = 0; i < xdepth; i++) 
 	{
 
@@ -481,13 +508,12 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 		curx += xinc;
 	}
 
-	// X constant
-	const double XK = (double)xinc;
-	const int xbase = latborx + CuTheme.borderthick;
+	// Draw right line
+	DrawThickLine(Image, xbor, lowbory, xbor, 0, (const BYTE*)CuTheme.bordercolor, CuTheme.borderthick);
+	
 	// Now draw the lines
 	It = Items.begin();
 
-	
 	while (It != Items.end())
 	{
 		LineItem& Lin = *It;
@@ -557,8 +583,10 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 			// Data label handler
 			if (CuTheme.datalabels)
 			{
-				DrawTxt(x1, y1 - CuTheme.fsize - lwidth, CuFormatter->FormatNum(First), CuTheme.textcolor, CuTheme.fsize);
-				DrawTxt(x2, y2 - CuTheme.fsize - lwidth, CuFormatter->FormatNum(Sec), CuTheme.textcolor, CuTheme.fsize);
+			
+
+			  DrawTxt(x1, y1 - CuTheme.fsize - lwidth, CuFormatter->FormatNum(First), CuTheme.textcolor, CuTheme.fsize);
+			  DrawTxt(x2, y2 - CuTheme.fsize - lwidth, CuFormatter->FormatNum(Sec), CuTheme.textcolor, CuTheme.fsize);
 
 			}
 			
@@ -568,7 +596,11 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 
 		++It;
 	}
+
 	DrawLegend(latborx,lowbory);
+
+	// Draw another line
+	
 }
 
 ZCharter::ZCharter()

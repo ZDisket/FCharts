@@ -19,6 +19,7 @@ using namespace cimg_library;
 #
 # Colors are BYTE[3], in RGB values.
 #
+# Copyright (C) 2019 YOUR MOM GAY LOLOLOL
 */
 namespace Faxon {
 	namespace EPointShape {
@@ -207,6 +208,8 @@ namespace Faxon {
 		void DrawLegend(const int& lbx, const int& lby);
 
 		void DrawChartArea(const int& latbx, const int& lowby);
+		void DrawChartArea(const int& latbx, const int& lowby,const int& xdest);
+
 		void DrawYStretchLine(int x1, int y1, int x2, int y2, BYTE col[3],int thick = 3, float opacity = 1.f);
 	public:
 		void SetTheme(const Theme& Tm);
