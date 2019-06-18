@@ -27,8 +27,7 @@ int main()
 	srand(time(NULL));
 
 	
-	/*
-	Bar Chart creator tester
+	
 	srand(time(NULL));
 	vector<BarItem> bars;
 
@@ -36,21 +35,21 @@ int main()
 	for (int i = 0; i < dos;++i)
 	{
 	
-		Bar Ba1(rand() % 50 + 5, 0, 0, 255);
-		Bar Ba2(rand() % 50 + 5, 255,255, 0);
-		Bar Ba3(rand() % 50 + 5, 255, 0, 0);
+		Bar Ba1(90 + (rand() % 10),0, 0, 255);
+	//	Bar Ba2(rand() % 50 + 5, 255,255, 0);
+		//Bar Ba3(rand() % 50 + 5, 255, 0, 0);
 
-		vector<Bar> DaVec;
-		DaVec.push_back(Ba1); DaVec.push_back(Ba2); DaVec.push_back(Ba3);
+		//vector<Bar> DaVec;
+		//DaVec.push_back(Ba1); DaVec.push_back(Ba2); DaVec.push_back(Ba3);
 		
 		
-		BarItem BI(cnames[i], DaVec);
+		BarItem BI(cnames[i], Ba1);
 	
 		bars.push_back(BI);
 	
 		
 	}
-	*/
+	
 
 	vector<std::string> lbls = { "2001","2002","2003","2004","2005","2006","2007","2008" };
 	vector<LineItem> lis;
@@ -108,8 +107,8 @@ int main()
 
 
 
-	Chart.BuildLineChart(lis,lbls,6);
-	//Chart.BuildBarChart(bars);
+//	Chart.BuildLineChart(lis,lbls,6);
+	Chart.BuildBarChart(bars);
 
 
 

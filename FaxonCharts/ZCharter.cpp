@@ -175,7 +175,7 @@ void Faxon::ZCharter::BuildBarChart(vector<BarItem>& Items)
 	}
 
 	// Since we only use these values for the margins, expand the max a little
-	max += percof(max, 20);
+	max += percof(max, 2);
 
 	// Build the borders
 
@@ -206,8 +206,8 @@ void Faxon::ZCharter::BuildBarChart(vector<BarItem>& Items)
 	int x1lg = latborx - (CuTheme.fsize / 2);
 
 	// Get the label numbers
-	const int labinc = max / ydepth;
-	int clabi = labinc;
+	const int labinc = (max - min) / ydepth;
+	int clabi = labinc + min;
 
 	// Independent incrementor
 	int fis = fincr;
@@ -216,7 +216,7 @@ void Faxon::ZCharter::BuildBarChart(vector<BarItem>& Items)
 
 
 	const double K = (double)fincr / (double)labinc;
-	clabi = 0;
+	clabi = min;
 	for (int i = 0;i < ydepth;i++)
 	{
 	
@@ -227,7 +227,7 @@ void Faxon::ZCharter::BuildBarChart(vector<BarItem>& Items)
 		// Lateral guide lines
 		Image.draw_line(x1lg, whr, w, whr, (BYTE*)CuTheme.guidelinecolor, 1.f);
 
-		clabi = fis / K;
+		clabi = (fis / K) + min;
 
 		whr -= fincr;
 
@@ -260,7 +260,7 @@ void Faxon::ZCharter::BuildBarChart(vector<BarItem>& Items)
 		{
 			// Calculate the coordinates
 			// Upper left corner 
-			int remr = K * Bar.tval;
+			int remr = K * (Bar.tval - min);
 
 			int ulcx = cbasex;
 			int ulcy = lowbory - remr - CuTheme.borderthick;
@@ -288,7 +288,7 @@ void Faxon::ZCharter::BuildBarChart(vector<BarItem>& Items)
 			while (Mit != Bar.Bars.end())
 			{
 				Faxon::Bar& B = *Mit;
-				int rem = K * B.value;
+				int rem = K * (B.value - min);
 
 				// Upper left corner
 				int ulcx = cbasex;
@@ -325,6 +325,7 @@ void Faxon::ZCharter::BuildBarChart(vector<BarItem>& Items)
 					IF_THEN_EL(br == 0, col = 0, col = 255);
 
 					// Draw the value text at the center of each square
+					// with the Y coordinate being biased up
 					int xcenter = cbasex + (realbarw / 2);
 					int ycenter = ulcy + (rem / 4);
 
