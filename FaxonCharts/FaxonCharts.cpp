@@ -20,55 +20,29 @@ int Random32(const INT32& in_iMin, const INT32& in_iMax)
 
 const static std::string cnames[10] = { "NZL","USA","GBR","AUS","BRA","PRC","RUS", "CAN","DRC","PRK" };
 using namespace Faxon;
-int main()
-{
-    std::cout << "Hello World!\n"; 
-	
-	srand(time(NULL));
 
-	
-	
-	srand(time(NULL));
+void TestBar() {
 	vector<BarItem> bars;
 
 	const int dos = 9;
-	for (int i = 0; i < dos;++i)
+	for (int i = 0; i < dos; ++i)
 	{
-	
-		Bar Ba1(90 + (rand() % 10),0, 0, 255);
-    	Bar Ba2(rand() % 50 + 5, 255,255, 0);
+
+		Bar Ba1(90 + (rand() % 10), 0, 0, 255);
+		Bar Ba2(rand() % 50 + 5, 255, 255, 0);
 		Bar Ba3(rand() % 50 + 5, 255, 0, 0);
 
 		vector<Bar> DaVec;
 		DaVec.push_back(Ba1); DaVec.push_back(Ba2); DaVec.push_back(Ba3);
-		
-		
+
+
 		BarItem BI(cnames[i], DaVec);
-	
+
 		bars.push_back(BI);
-	
-		
-	}
-	
-
-	vector<std::string> lbls = { "2001","2002","2003","2004","2005","2006","2007","2008" };
-	vector<LineItem> lis;
-	for (int f = 0;f < 3;f++)
-	{
-		vector<int> vs;
-		for (int i = 0; i < lbls.size(); i++)
-		{
-			vs.push_back(Random32(1000,70000));
-
-		}
-		LineItem Lix(cnames[f], vs, EPointShape::FullCircle,Random32(50,255), Random32(50, 255), Random32(50, 255));
-
-		lis.push_back(Lix);
-		srand(time(NULL));
 
 
 	}
-	/*
+	
 	LegendEntry Leg1;
 	ascol(Leg1.color, 255, 0, 0);
 	Leg1.name = "Ground";
@@ -80,7 +54,46 @@ int main()
 	LegendEntry Leg3;
 	ascol(Leg3.color, 0, 0, 255);
 	Leg3.name = "Naval";
-	*/
+	
+	vector<LegendEntry> Lege;
+	Lege.push_back(Leg1);
+	Lege.push_back(Leg2);
+	Lege.push_back(Leg3);
+
+
+	ZCharter Chart;
+	Chart.Init(900, 350);
+	Chart.SetLegend(Lege);
+	Chart.AddNote("Press Delete to close");
+
+
+	//	Chart.BuildLineChart(lis,lbls,6);
+	Chart.BuildBarChart(bars);
+
+
+
+	Chart.GetImage().display();
+
+}
+void TestLine() {
+	vector<std::string> lbls = { "2001","2002","2003","2004","2005","2006","2007","2008" };
+	vector<LineItem> lis;
+	for (int f = 0; f < 3; f++)
+	{
+		vector<int> vs;
+		for (int i = 0; i < lbls.size(); i++)
+		{
+			vs.push_back(Random32(1000, 70000));
+
+		}
+		LineItem Lix(cnames[f], vs, EPointShape::FullCircle, Random32(50, 255), Random32(50, 255), Random32(50, 255));
+
+		lis.push_back(Lix);
+		srand(time(NULL));
+
+
+	}
+
 
 
 	LegendEntry Leg1;
@@ -107,13 +120,25 @@ int main()
 	Chart.AddNote("Press Delete to close");
 
 
-//	Chart.BuildLineChart(lis,lbls,6);
-	Chart.BuildBarChart(bars);
+		Chart.BuildLineChart(lis,lbls,6);
 
 
 
 	Chart.GetImage().display();
+
+}
+int main()
+{
+    std::cout << "Hello World!\n"; 
 	
+	srand(time(NULL));
+
+	
+	
+	srand(time(NULL));
+	
+
+	TestLine();
 
 	return 0;
 }

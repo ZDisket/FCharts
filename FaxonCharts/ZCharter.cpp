@@ -452,7 +452,7 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 		++It;
 	}
 	// Since we only use these values for the margins, expand the max a little
-	max += percof(max, 20);
+	max += percof(max, 5);
 
 	// Build the borders
 
@@ -482,8 +482,8 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 	int x1lg = latborx - (CuTheme.fsize / 2);
 
 	// Get the label numbers
-	const int labinc = max / ydepth;
-	int clabi = labinc;
+	const int labinc = (max - min) / ydepth;
+	int clabi = labinc + min;
 	int fis = fincr;
 
 	//clabi = fis / K;
@@ -507,18 +507,18 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 	DrawChartArea(latborx, lowbory,xbor);
 
 
-	clabi = 0;
+	clabi = min;
 	for (int i = 0; i < ydepth; i++)
 	{
 
 
 		std::string txt = CuFormatter->FormatNum(clabi);
-		Image.draw_text(latborx - (CuTheme.fsize * (txt.length() * 0.8)), whr - (CuTheme.fsize * 0.5), txt.c_str(), (BYTE*)&CuTheme.textcolor, CuTheme.fsize, 1.f);
+		Image.draw_text(latborx - (GetFontSz(txt,CuTheme.fsize)) - 4, whr - (CuTheme.fsize * 0.5), txt.c_str(), (BYTE*)&CuTheme.textcolor, CuTheme.fsize, 1.f);
 
 		// Lateral guide lines
 		Image.draw_line(x1lg, whr, xbor, whr, (BYTE*)CuTheme.guidelinecolor, 1.f);
 
-		clabi = fis / K;
+		clabi = (fis / K) + min;
 
 		whr -= fincr;
 
@@ -542,7 +542,7 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 		// Short guide line
 		Image.draw_line(curx, lowbory + 5 + CuTheme.borderthick, curx, lowbory - CuTheme.borderthick - 5, (BYTE*)CuTheme.guidelinecolor, 1.f);
 
-		DrawTxt(curx - CuTheme.fsize, laby + (CuTheme.fsize / 4), XLabels[i], CuTheme.textcolor, CuTheme.fsize);
+		DrawTxt(curx - (GetFontSz(XLabels[i], CuTheme.fsize) / 2), laby + (CuTheme.fsize / 4), XLabels[i], CuTheme.textcolor, CuTheme.fsize);
 
 
 		curx += xinc;
@@ -571,13 +571,14 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 			int& Sec = *Lit;
 
 			
-
+			int y1r = K * (First - min);
+			int y2r = K * (Sec - min);
 
 			int x1 = xbase + (XK * idx );
 			int x2 = xbase + (XK * (idx + 1));
 
-			int y1 = lowbory - CuTheme.borderthick - (K * First);
-			int y2 = lowbory - CuTheme.borderthick - (K * Sec);
+			int y1 = lowbory - CuTheme.borderthick - y1r;
+			int y2 = lowbory - CuTheme.borderthick - y2r;
 
 			
 			// Connect
