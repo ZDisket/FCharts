@@ -174,6 +174,7 @@ namespace Faxon {
 	class Formatter {
 	public:
 		virtual std::string FormatNum(const int& num);
+		
 
 	};
 
@@ -192,6 +193,8 @@ namespace Faxon {
 	class ZCharter
 	{
 	private:
+		// Get width of font
+		int GetFontSz(const std::string& txt, const int& cus);
 		// Image is 3 channel RGB, alpha channel is for gays
 		CImg<BYTE> Image;
 	
@@ -200,6 +203,7 @@ namespace Faxon {
 		Formatter* CuFormatter;
 		
 		vector<LegendEntry> Legend;
+		vector<std::string> Notes;
 		int ydepth;
 
 		void InitGenericTheme();
@@ -215,7 +219,8 @@ namespace Faxon {
 		void SetTheme(const Theme& Tm);
 		void Init(const int& width, const int& height);
 		void SetDepth(const int& nydepth);
-		
+		inline void SetNotes(const vector<std::string>& nts) { Notes = nts; }
+		inline void AddNote(const std::string& ant) { Notes.push_back(ant); }
 		// Set the legend, which will be drawn on the BuildXXXcharts functions.
 		void SetLegend(vector<LegendEntry>& Leg);
 

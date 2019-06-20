@@ -36,14 +36,14 @@ int main()
 	{
 	
 		Bar Ba1(90 + (rand() % 10),0, 0, 255);
-	//	Bar Ba2(rand() % 50 + 5, 255,255, 0);
-		//Bar Ba3(rand() % 50 + 5, 255, 0, 0);
+    	Bar Ba2(rand() % 50 + 5, 255,255, 0);
+		Bar Ba3(rand() % 50 + 5, 255, 0, 0);
 
-		//vector<Bar> DaVec;
-		//DaVec.push_back(Ba1); DaVec.push_back(Ba2); DaVec.push_back(Ba3);
+		vector<Bar> DaVec;
+		DaVec.push_back(Ba1); DaVec.push_back(Ba2); DaVec.push_back(Ba3);
 		
 		
-		BarItem BI(cnames[i], Ba1);
+		BarItem BI(cnames[i], DaVec);
 	
 		bars.push_back(BI);
 	
@@ -104,7 +104,7 @@ int main()
 	ZCharter Chart;
 	Chart.Init(900, 350);
 	Chart.SetLegend(Lege);
-
+	Chart.AddNote("Press Delete to close");
 
 
 //	Chart.BuildLineChart(lis,lbls,6);

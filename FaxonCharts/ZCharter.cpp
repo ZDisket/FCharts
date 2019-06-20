@@ -10,6 +10,14 @@ void Faxon::ZCharter::DrawTxt(const int & x0, const int & y0, const std::string 
 	Image.draw_text(x0, y0, str.c_str(), (BYTE*)col, fsize, opacity);
 
 }
+int Faxon::ZCharter::GetFontSz(const std::string & txt, const int & cus)
+{
+	CImg<BYTE> tempd;
+	unsigned char co = 1;
+
+	tempd.draw_text(0, 0, txt.c_str(), &co, 0, 1, cus);  
+	return tempd.width();
+}
 void ZCharter::InitGenericTheme()
 {
 	ascol(CuTheme.bgcolor, 255, 255, 255);
@@ -74,11 +82,26 @@ void Faxon::ZCharter::DrawLegend(const int & lbx, const int & lby)
 		DrawTxt(atx, aty, Lit->name, CuTheme.textcolor, CuTheme.fsize);
 
 		// Square size, font size, separation
-		xincr += 10 + (CuTheme.fsize * Lit->name.length()) + 5;
+		xincr += 10 + GetFontSz(Lit->name,CuTheme.fsize) + 5;
 	
 		++Lit;
 	}
-	
+	auto Nit = Notes.begin();
+   
+	while (Nit != Notes.end()) 
+	{
+		std::string& nt = *Nit;
+
+		int tx = xincr + 4;
+		int ty = basey - 1;
+
+		DrawTxt(tx, ty, nt, CuTheme.textcolor, CuTheme.fsize);
+
+		xincr += GetFontSz(nt, CuTheme.fsize);
+
+		++Nit;
+
+	}
 
 }
 
@@ -168,9 +191,23 @@ void Faxon::ZCharter::BuildBarChart(vector<BarItem>& Items)
 		if (Bar.tval > max)
 			max = Bar.tval;
 		
-		if (Bar.tval < min)
-			min = Bar.tval;
-	
+		if (Bar.Bars.size() == 1) {
+			if (Bar.tval < min)
+				min = Bar.tval;
+
+
+		}
+		else {
+			auto Bit = Bar.Bars.begin();
+			while (Bit != Bar.Bars.end())
+			{
+				if (Bit->value < min)
+					min = Bit->value;
+
+				++Bit;
+			}
+		}
+		
 		++It;
 	}
 
@@ -222,7 +259,7 @@ void Faxon::ZCharter::BuildBarChart(vector<BarItem>& Items)
 	
 
 		std::string txt = CuFormatter->FormatNum(clabi);
-		Image.draw_text(latborx - (CuTheme.fsize * (txt.length() * 0.8)), whr - (CuTheme.fsize * 0.5), txt.c_str(), (BYTE*)&CuTheme.textcolor, CuTheme.fsize, 1.f);
+		Image.draw_text(latborx - GetFontSz(txt, CuTheme.fsize) - (CuTheme.fsize / 2), whr - (CuTheme.fsize * 0.5), txt.c_str(), (BYTE*)&CuTheme.textcolor, CuTheme.fsize, 1.f);
 		
 		// Lateral guide lines
 		Image.draw_line(x1lg, whr, w, whr, (BYTE*)CuTheme.guidelinecolor, 1.f);
@@ -356,9 +393,11 @@ void Faxon::ZCharter::BuildBarChart(vector<BarItem>& Items)
 
 		}
 		
-
+		int fza = ( realbarw / 2) - (GetFontSz(Bar.Name, CuTheme.fsize) / 2);
+		if (fza < 0)
+			fza = 0;
 		// Draw the item text
-		Image.draw_text(cbasex + (CuTheme.fsize * 0.9), lowbory + 0 + CuTheme.borderthick, Bar.Name.c_str(), (BYTE*)CuTheme.textcolor, CuTheme.fsize, 1.f);
+		Image.draw_text(cbasex + fza, lowbory + 0 + CuTheme.borderthick, Bar.Name.c_str(), (BYTE*)CuTheme.textcolor, CuTheme.fsize, 1.f);
 
 			
 		
