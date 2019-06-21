@@ -76,17 +76,17 @@ void TestBar() {
 
 }
 void TestLine() {
-	vector<std::string> lbls = { "2001","2002","2003","2004","2005","2006","2007","2008" };
+	vector<std::string> lbls = { " 01/01/01","01/01/31","23/31/22","2004","2005","2006","2007" };
 	vector<LineItem> lis;
-	for (int f = 0; f < 3; f++)
+	for (int f = 0; f < 1; f++)
 	{
 		vector<int> vs;
-		for (int i = 0; i < lbls.size(); i++)
+		for (int i = 0; i < 7; i++)
 		{
-			vs.push_back(Random32(1000, 70000));
+			vs.push_back(Random32(11000,13000));
 
 		}
-		LineItem Lix(cnames[f], vs, EPointShape::FullCircle, Random32(50, 255), Random32(50, 255), Random32(50, 255));
+		LineItem Lix(cnames[f], vs, EPointShape::FullCircle,255,0,0);
 
 		lis.push_back(Lix);
 		srand(time(NULL));
@@ -100,27 +100,27 @@ void TestLine() {
 	ascol(Leg1.color, lis[0].color[0], lis[0].color[1], lis[0].color[2]);
 	Leg1.name = "United Kingdom";
 
-	LegendEntry Leg2;
-	Leg2.name = "United States";
-	ascol(Leg2.color, lis[1].color[0], lis[1].color[1], lis[1].color[2]);
+	//LegendEntry Leg2;
+	//Leg2.name = "United States";
+//	ascol(Leg2.color, lis[1].color[0], lis[1].color[1], lis[1].color[2]);
 
-	LegendEntry Leg3;
-	Leg3.name = "Canada";
-	ascol(Leg3.color, lis[2].color[0], lis[2].color[1], lis[2].color[2]);
+	//LegendEntry Leg3;
+	//Leg3.name = "Canada";
+	//ascol(Leg3.color, lis[2].color[0], lis[2].color[1], lis[2].color[2]);
 
 	vector<LegendEntry> Lege;
 	Lege.push_back(Leg1);
-	Lege.push_back(Leg2);
-	Lege.push_back(Leg3);
+	//Lege.push_back(Leg2);
+//	Lege.push_back(Leg3);
 
 
 	ZCharter Chart;
-	Chart.Init(900, 350);
+	Chart.Init(650, 340);
 	Chart.SetLegend(Lege);
 	Chart.AddNote("Press Delete to close");
 
 
-		Chart.BuildLineChart(lis,lbls,6);
+		Chart.BuildLineChart(lis,lbls,3);
 
 
 

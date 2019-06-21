@@ -29,7 +29,7 @@ void ZCharter::InitGenericTheme()
 	CuTheme.borderthick = 2;
 	CuTheme.guidelineopacity = 0.4f;
 	CuTheme.fsize = 12;
-	CuTheme.datalabels = true;
+	CuTheme.datalabels = false;
 }
 
 
@@ -567,8 +567,16 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 		while (Lit != Lin.Vals.end())
 		{
 			int& First = *Lit;
-			++Lit;
-			int& Sec = *Lit;
+			int Sec = -1;
+			if (Lit != Lin.Vals.end() - 1)
+			{
+				++Lit;
+
+				Sec = *Lit;
+			
+			
+			}
+
 
 			
 			int y1r = K * (First - min);
@@ -590,7 +598,9 @@ void Faxon::ZCharter::BuildLineChart(vector<LineItem>& Items, const vector<std::
 
 			}
 			//DrawThickLine(Image, x1, y1, x2, y2, (const BYTE*)Lin.color, lwidth);
-			DrawYStretchLine(x1, y1, x2, y2, Lin.color, lwidth);
+			if (Sec != -1)
+				DrawYStretchLine(x1, y1, x2, y2, Lin.color, lwidth);
+
 
 
 
